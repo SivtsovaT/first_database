@@ -1,0 +1,112 @@
+const express = require('express')
+const Pool = require('pg-pool')
+
+const router = express.Router()
+const pool = new Pool({
+    database: 'first_database',
+    user: 'postgres',
+    password: 'ccc777ccc',
+    host: 'localhost',
+    port: 5432,
+    max: 5,
+    idleTimeoutMillis: 10000,
+    connectionTimeoutMillis: 1000,
+});
+
+const users = [{token: 'super-token', groups: ['manager']}, {token: 'simple-token'}]
+
+router.use((req, res, next) => {
+    const authHeader = req.header('Authorization');
+    if (authHeader) {
+        const token = authHeader.split(' ')[1]
+        const user = users.find((user) => {
+            return user.token === token
+        })
+        if (user) {
+            req.authorizationGroups = [...user.groups];
+            next();
+        } else {
+            next({
+                code: 1010,
+                message: 'User dont have permissions to read this resource',
+                description: 'Check you token or access rights. Contact to administrator'
+            })
+        }
+    } else {
+        next({
+            code: 1010,
+            message: 'User dont have permissions to read this resource',
+            description: 'Check you token or access rights. Contact to administrator'
+        })
+    }
+});
+
+router.get('/', (req, res, next) => {
+    const limit = req.query.limit
+    const offset = req.query.offset
+
+    const groups = req.authorizationGroups;
+    if (groups.includes('manager')) {
+        pool.connect()
+            .then(client => {
+                const query = `SELECT user_id,last_name,first_name,city FROM users LIMIT ${limit} OFFSET ${offset}`;
+                client.query(query)
+                    .then(queryResult => {
+                        const rows = queryResult.rows;
+                        res.send(rows);
+                    })
+                    .catch(e => {
+                        next(e);
+                    });
+            });
+    } else {
+        throw {
+            code: 1010,
+            message: 'User dont have permissions to read this resource, not in group',
+            description: 'Check you token or access rights. Contact to administrator'
+        }
+    }
+})
+router.get('/:userId', (req, res, next) => {
+    const userId = req.params.userId
+
+    pool.connect()
+        .then(client => {
+            const query = `SELECT user_id,last_name,first_name,city FROM users WHERE user_id=${userId}`;
+            client.query(query)
+                .then(queryResult => {
+                    const rowCount = queryResult.rowCount;
+                    if (rowCount === 1) {
+                        res.send(queryResult.rows[0]);
+                    } else {
+                        next({message: 'Not found'});
+                    }
+                })
+                .catch(e => {
+                    next(e);
+                });
+        });
+})
+router.post('/', (req, res, next) => {
+    const newUser = req.body
+
+    pool.connect()
+        .then(client => {
+            const query = `INSERT INTO users (first_name, last_name, city)
+                        VALUES ('${newUser.first_name}', '${newUser.last_name}', '${newUser.city}') RETURNING *`;
+            client.query(query)
+                .then(queryResult => {
+                    const rowCount = queryResult.rowCount;
+                    if (rowCount === 1) {
+                        res.send(queryResult.rows[0]);
+                    } else {
+                        next({message: 'Failed to create user'});
+                    }
+                })
+                .catch(e => {
+                    next(e);
+                });
+        });
+})
+
+module.exports = router
