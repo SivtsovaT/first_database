@@ -1,4 +1,4 @@
-const pool = require('./db_connection').pool;
+const pool = require('../db_connection').pool;
 
 const getUserById = (userId) => {
     return pool.connect()

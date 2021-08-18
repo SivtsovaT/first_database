@@ -1,9 +1,9 @@
 require('dotenv').config()
 const express = require('express')
-const usersApi = require('./users')
-const credentialsApi = require('./credentials')
+const usersApi = require('./users/users')
+const credentialsApi = require('./credentials/credentials')
 const bodyParser = require('body-parser')
-const credentialsDB = require('./credentials_repository')
+const credentialsDB = require('./credentials/credentials_repository')
 const app = express()
 const port = process.env.APP_PORT || 3000
 
