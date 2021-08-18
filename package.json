@@ -1,0 +1,23 @@
+{
+  "name": "first_express",
+  "version": "1.0.0",
+  "description": "My first express demo",
+  "main": "index.js",
+  "scripts": {
+    "start_local": "export DATABASE_NAME=first-db && export DATABASE_USER=user1 && export DATABASE_PASSWORD=pass1 && node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "pg": "^8.7.1",
+    "pg-pool": "^3.4.1"
+  },
+  "devDependencies": {
+    "db-migrate": "^0.11.12",
+    "db-migrate-pg": "^1.2.2"
+  }
+}
