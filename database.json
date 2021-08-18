@@ -1,0 +1,17 @@
+{
+  "dev": {
+    "driver": "pg",
+    "user": {
+      "ENV": "DATABASE_USER"
+    },
+    "password": {
+      "ENV": "DATABASE_PASSWORD"
+    },
+    "host": "localhost",
+    "database": {
+      "ENV": "DATABASE_NAME"
+    },
+    "port": "5432",
+    "schema": "first_express"
+  }
+}
