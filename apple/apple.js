@@ -7,7 +7,7 @@ const router = express.Router()
 router.post('/', (req, res, next) => {
     const newApple = req.body
 
-    appleRepository.createApple(newApple.color, newApple.size)
+    appleRepository.createApple(newApple.color, newApple.size, newApple.region, newApple.harvest_in_ton)
         .then(apple => {
             res.send(apple)
         })
