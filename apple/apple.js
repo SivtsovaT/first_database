@@ -27,4 +27,16 @@ router.get('/', (req, res, next) => {
         })
 })
 
+router.delete('/:appleId', (req, res, next) => {
+    const appleId = req.params.appleId
+
+    appleRepository.deleteAppleById(appleId)
+        .then(apple => {
+            res.send(apple)
+        })
+        .catch(e => {
+            next(e);
+        });
+})
+
 module.exports = router

@@ -30,8 +30,25 @@ const getApples = (offset, limit) => {
         });
 }
 
+const deleteAppleById = (appleId) => {
+    return pool.connect()
+        .then(client => {
+            const query = `DELETE
+                           FROM public.apples
+                           WHERE apple_id = ${appleId}`;
+            return client.query(query)
+        })
+        .then(queryResult => {
+            if (queryResult.rowCount !== 1) {
+                throw 'Matching user failed';
+            }
+            return queryResult.rows[0];
+        });
+}
+
 module.exports = {
     createApple,
-    getApples
+    getApples,
+    deleteAppleById
 
 }
