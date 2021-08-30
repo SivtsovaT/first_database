@@ -16,7 +16,21 @@ const createApple = (color, size, region, harvestInTon) => {
         });
 }
 
+const getApples = (offset, limit) => {
+    return pool.connect()
+        .then(client => {
+            const query = `SELECT apple_id, color, size, region, harvest_in_ton
+                           FROM public.apples
+                           LIMIT ${limit} OFFSET ${offset}`;
+            return client.query(query)
+        })
+        .then(queryResult => {
+            return queryResult.rows;
+        });
+}
+
 module.exports = {
-    createApple
+    createApple,
+    getApples
 
 }

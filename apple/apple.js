@@ -16,4 +16,15 @@ router.post('/', (req, res, next) => {
         });
 })
 
+
+router.get('/', (req, res, next) => {
+    const limit = req.query.limit || 25
+    const offset = req.query.offset || 0
+
+    appleRepository.getApples(offset, limit)
+        .then(apple => {
+            res.send(apple);
+        })
+})
+
 module.exports = router
