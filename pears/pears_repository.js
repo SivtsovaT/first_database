@@ -3,8 +3,8 @@ const pool = require('../db_connection').pool
 const addPears = (kind, origin_country, ripening_time, amount, price_per_tree) => {
     return pool.connect()
         .then(client => {
-            const query = `INSERT INTO public.pears (kind, origin_country, ripening_time, amount, price_per_tree) 
-                           VALUES ('${kind}', '${origin_country}', '${ripening_tim}','${amount}', '${price_per_tree}')
+            const query = `INSERT INTO first_express.pears (kind, origin_country, ripening_time, amount, price_per_tree) 
+                           VALUES ('${kind}', '${origin_country}', '${ripening_time}','${amount}', '${price_per_tree}')
                            RETURNING *`
             return client.query(query)
         })
@@ -18,6 +18,19 @@ const addPears = (kind, origin_country, ripening_time, amount, price_per_tree) =
 
 }
 
+const deletePearById = (pearId) =>{
+    return pool.connect()
+        .then(client => {
+            const query = `DELETE FROM first_express.pears
+                           WHERE id = ${pearId}`
+            return client.query(query)
+        })
+        .then(queryResult =>{
+            return queryResult.rows
+        })
+}
+
 module.exports = {
-    addPears
+    addPears,
+    deletePearById
 }

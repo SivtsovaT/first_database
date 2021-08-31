@@ -16,6 +16,17 @@ router.post('/pears', ((req, res, next) => {
     }
 ))
 
+router.delete('/pears/:pearId', ((req, res, next) =>{
+    const pearId = req.params.pearId
+
+    pears_repository.deletePearById(pearId)
+        .then(user => {
+            res.send(user)
+        })
+        .catch(e => {
+            next(e)
+        })
+}) )
 
 
 module.exports = router
