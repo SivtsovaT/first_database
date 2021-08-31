@@ -4,6 +4,7 @@ const usersApi = require('./users/users')
 const applesApi = require('./apple/apple')
 const credentialsApi = require('./credentials/credentials')
 const bodyParser = require('body-parser')
+const pearsApi = require('./pears/pears')
 const app = express()
 const port = process.env.APP_PORT || 3000
 
@@ -59,6 +60,7 @@ app.use('/users', usersApi);
 app.use('/apples', applesApi);
 app.use('/superUsers', usersApi);
 app.use(credentialsApi);
+app.use('/pears', pearsApi)
 
 app.get('/', (req, res) => {
     const name = req.query.name
