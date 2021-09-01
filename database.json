@@ -11,7 +11,9 @@
     "database": {
       "ENV": "DATABASE_NAME"
     },
-    "port": "5432",
+    "port": {
+      "ENV": "DATABASE_PORT"
+    },
     "schema": "first_express"
   }
 }
