@@ -1,0 +1,1 @@
+drop table first_express.pears;
