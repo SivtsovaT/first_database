@@ -1,2 +1,2 @@
-drop table first_express.users;
-drop table first_express.user_credentials;
+drop table users;
+drop table user_credentials;

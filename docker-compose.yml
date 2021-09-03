@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  first_express_database:
+    image: postgres:13-alpine3.14
+    ports:
+      - "${DATABASE_PORT}:5432"
+    volumes:
+      - first_expess_volume:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+      PGDATA: /var/lib/postgresql/data/pgdata
+volumes:
+  first_expess_volume: { }
