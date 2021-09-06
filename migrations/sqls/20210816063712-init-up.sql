@@ -1,6 +1,4 @@
-create schema if not exists first_express;
-
-create table first_express.users
+create table users
 (
     user_id    serial      primary key,
     first_name varchar(20) not null,
@@ -8,7 +6,7 @@ create table first_express.users
     city       varchar(15)
 );
 
-create table first_express.user_credentials
+create table user_credentials
 (
     user_id  serial      primary key,
     username varchar(20) not null unique,

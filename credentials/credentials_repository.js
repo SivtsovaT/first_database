@@ -3,7 +3,7 @@ const pool = require('../db_connection').pool;
 const registerUser = (username, password, groups) => {
     return pool.connect()
         .then(client => {
-            const query = `INSERT INTO first_express.user_credentials (username, password, roles)
+            const query = `INSERT INTO user_credentials (username, password, roles)
                            VALUES ('${username}', '${password}', '{"user","manager"}')
                            RETURNING username`;
             return client.query(query)
@@ -20,7 +20,7 @@ const authenticateUser = (username, password) => {
     return pool.connect()
         .then(client => {
             const token = `token-at-${Date.now()}`
-            const query = `UPDATE first_express.user_credentials
+            const query = `UPDATE user_credentials
                            SET token='${token}'
                            WHERE username = '${username}'
                              AND password = '${password}'
@@ -39,7 +39,7 @@ const authorizeUser = (token) => {
     return pool.connect()
         .then(client => {
             const query = `SELECT username, roles
-                           FROM first_express.user_credentials
+                           FROM user_credentials
                            WHERE token = '${token}'`;
             return client.query(query)
         })
