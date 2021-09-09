@@ -46,9 +46,26 @@ const deleteAppleById = (appleId) => {
         });
 }
 
+const replaceAppleById = (appleId) => {
+    return pool.connect()
+        .then(client => {
+            const query = `UPDATE apples
+                           SET color = 'rainbow'
+                           WHERE apple_id = ${appleId}`;
+            return client.query(query)
+        })
+        .then(queryResult => {
+            if (queryResult.rowCount !== 1) {
+                throw 'Matching user failed';
+            }
+            return queryResult.rows[0];
+        });
+}
+
 module.exports = {
     createApple,
     getApples,
-    deleteAppleById
+    deleteAppleById,
+    replaceAppleById
 
 }
