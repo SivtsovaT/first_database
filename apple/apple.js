@@ -39,10 +39,11 @@ router.delete('/:appleId', (req, res, next) => {
         });
 })
 
-router.put('/id/:appleId', (req, res, next) => {
+router.put('/:appleId', (req, res, next) => {
     const appleId = req.params.appleId
+    const newApple = req.body
 
-    appleRepository.replaceAppleById(appleId)
+    appleRepository.replaceAppleById(appleId, newApple)
         .then(apple => {
             res.send(apple)
         })

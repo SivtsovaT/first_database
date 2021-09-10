@@ -5,7 +5,8 @@ const createApple = (color, size, region, harvestInTon) => {
     return pool.connect()
         .then(client => {
             const query = `INSERT INTO apples (color, size, region, harvest_in_ton)
-                           VALUES ('${color}', '${size}', '${region}', '${harvestInTon}') RETURNING *`;
+                           VALUES ('${color}', '${size}', '${region}', '${harvestInTon}')
+                           RETURNING *`;
             return client.query(query)
         })
         .then(queryResult => {
@@ -20,9 +21,10 @@ const getApples = (offset, limit) => {
     return pool.connect()
         .then(client => {
             const query = `SELECT apple_id, color, size, region, harvest_in_ton
-                           FROM apples ORDER BY color
+                           FROM apples
+                           ORDER BY color
                            LIMIT ${limit} OFFSET ${offset}
-                           `;
+            `;
             return client.query(query)
         })
         .then(queryResult => {
@@ -46,12 +48,16 @@ const deleteAppleById = (appleId) => {
         });
 }
 
-const replaceAppleById = (appleId) => {
+const replaceAppleById = (appleId, newApple) => {
     return pool.connect()
         .then(client => {
             const query = `UPDATE apples
-                           SET color = 'rainbow'
-                           WHERE apple_id = ${appleId}`;
+                           SET color          = ${nullifyValue(newApple.color)},
+                               size           = ${nullifyValue(newApple.size)},
+                               region         = ${nullifyValue(newApple.region)},
+                               harvest_in_ton = ${newApple.harvest_in_ton || null}
+                           WHERE apple_id = ${appleId}
+                           RETURNING *`;
             return client.query(query)
         })
         .then(queryResult => {
@@ -60,6 +66,10 @@ const replaceAppleById = (appleId) => {
             }
             return queryResult.rows[0];
         });
+}
+
+const nullifyValue = (value) => {
+    return value === undefined ? null : `'${value}'`
 }
 
 module.exports = {
