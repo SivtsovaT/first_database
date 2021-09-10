@@ -28,5 +28,18 @@ router.delete('/pears/:pearId', ((req, res, next) =>{
         })
 }) )
 
+router.put('/:pearId', ((req, res, next) =>{
+    const pearId = req.params.pearId
+    const changedPear = req.body
+
+    pears_repository.changePearById(pearId, changedPear.kind, changedPear.origin_country, changedPear.ripening_time,
+        changedPear.amount, changedPear.price_per_tree)
+        .then(pear =>{
+            res.send(pear)
+        })
+        .catch(e =>{
+            next(e)
+        })
+}))
 
 module.exports = router

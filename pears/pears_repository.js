@@ -30,7 +30,29 @@ const deletePearById = (pearId) =>{
         })
 }
 
+const changePearById = (pearId, kind, origin_country, ripening_time, amount, price_per_tree) =>{
+    return pool.connect()
+        .then(client =>{
+            const query = `UPDATE pears
+                           SET kind='${kind}',
+                               origin_country='${origin_country}',
+                               ripening_time='${ripening_time}',
+                               amount=${amount},
+                               price_per_tree=${price_per_tree}
+                           WHERE id = ${pearId}`
+            return client.query(query)
+        })
+        .then(queryResult =>{
+            if(queryResult.rowCount !== 1){
+                throw 'No records with such id. Try another.'
+            }
+            return 'The record is updated'
+        })
+}
+
+
 module.exports = {
     addPears,
-    deletePearById
+    deletePearById,
+    changePearById
 }
