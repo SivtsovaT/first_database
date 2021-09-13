@@ -72,10 +72,25 @@ const nullifyValue = (value) => {
     return value === undefined ? null : `'${value}'`
 }
 
+const getAppleById = (appleId) => {
+    return pool.connect()
+        .then(client => {
+            const query = `SELECT apple_id, color, size, region, harvest_in_ton
+                           FROM apples WHERE apple_id = ${appleId}
+                           `;
+            return client.query(query)
+        })
+        .then(queryResult => {
+            return queryResult.rows;
+        });
+}
+
+
 module.exports = {
     createApple,
     getApples,
     deleteAppleById,
-    replaceAppleById
+    replaceAppleById,
+    getAppleById
 
 }
