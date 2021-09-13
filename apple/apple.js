@@ -64,4 +64,16 @@ router.get('/id/:appleId', (req, res, next) => {
         });
 })
 
+router.get('/color/:appleColor', (req, res, next) => {
+    const appleColor = req.params.appleColor
+
+    appleRepository.applesByKind(appleColor)
+        .then(apple => {
+            res.send(apple)
+        })
+        .catch(e => {
+            next(e);
+        });
+})
+
 module.exports = router

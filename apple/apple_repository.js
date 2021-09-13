@@ -85,12 +85,29 @@ const getAppleById = (appleId) => {
         });
 }
 
+const applesByKind = (appleColor) => {
+    return pool.connect()
+        .then(client => {
+            const query = `SELECT apple_id, color, size, region, harvest_in_ton
+                           FROM apples WHERE color IN (${appleColor})`;
+
+            return client.query(query)
+        })
+
+        .then(queryResult => {
+            return queryResult.rows;
+        });
+
+
+}
+
 
 module.exports = {
     createApple,
     getApples,
     deleteAppleById,
     replaceAppleById,
-    getAppleById
+    getAppleById,
+    applesByKind
 
 }
