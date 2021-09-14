@@ -76,4 +76,17 @@ router.get('/color/:appleColor', (req, res, next) => {
         });
 })
 
+router.get('/inRange', (req, res, next) => {
+    const minAmount = parseInt(req.query.minAmount)
+    const maxAmount = parseInt(req.query.maxAmount)
+
+    appleRepository.getApplesInRange(minAmount, maxAmount)
+        .then(apple => {
+            res.send(apple)
+        })
+        .catch(e => {
+            next(e);
+        });
+})
+
 module.exports = router

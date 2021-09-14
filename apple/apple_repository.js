@@ -101,6 +101,21 @@ const applesByKind = (appleColor) => {
 
 }
 
+const getApplesInRange = (minAmount, maxAmount) => {
+    return pool.connect()
+        .then(client => {
+            const query = `SELECT apple_id, color, size, region, harvest_in_ton
+                           FROM apples WHERE harvest_in_ton BETWEEN ${minAmount} AND ${maxAmount} `;
+            return client.query(query)
+        })
+
+        .then(queryResult => {
+            return queryResult.rows;
+        });
+
+
+}
+
 
 module.exports = {
     createApple,
@@ -108,6 +123,7 @@ module.exports = {
     deleteAppleById,
     replaceAppleById,
     getAppleById,
-    applesByKind
+    applesByKind,
+    getApplesInRange
 
 }
