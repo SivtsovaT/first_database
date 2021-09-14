@@ -55,7 +55,7 @@ router.put('/:pearId', ((req, res, next) =>{
         })
 }))
 
-router.get('/:pearId', ((req, res, next) =>{
+router.get('/pearId/:pearId', ((req, res, next) =>{
     const pearId = req.params.pearId
 
     pears_repository.getPearById(pearId)
@@ -66,6 +66,19 @@ router.get('/:pearId', ((req, res, next) =>{
             next(e)
         })
 
+}))
+
+router.get('/inRange', ((req, res, next)=>{
+    const minAmount = req.query.minAmount
+    const maxAmount = req.query.maxAmount
+
+    pears_repository.getPearsInRange(minAmount, maxAmount)
+        .then(pear =>{
+            res.send(pear)
+        })
+        .catch(e =>{
+            next(e)
+        })
 }))
 
 module.exports = router
