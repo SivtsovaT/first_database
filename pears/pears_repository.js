@@ -1,10 +1,11 @@
 const pool = require('../db_connection').pool
 
-const addPears = (kind, origin_country, ripening_time, amount, price_per_tree) => {
+const addPears = (newPear) => {
     return pool.connect()
         .then(client => {
-            const query = `INSERT INTO pears (kind, origin_country, ripening_time, amount, price_per_tree) 
-                           VALUES ('${kind}', '${origin_country}', '${ripening_time}','${amount}', '${price_per_tree}')
+            const query = `INSERT INTO pears (kind, origin_country, ripening_time, amount, price_per_tree)
+                           VALUES ('${newPear.kind}', '${newPear.origin_country}', '${newPear.ripening_time}',
+                                   '${newPear.amount}', '${newPear.price_per_tree}')
                            RETURNING *`
             return client.query(query)
         })
@@ -69,10 +70,26 @@ const changePearById = (pearId, kind, origin_country, ripening_time, amount, pri
         })
 }
 
+const getPearById = (pearId) => {
+    return pool.connect()
+        .then(client =>{
+            return client.query(
+                `SELECT * FROM pears WHERE id = ${pearId}`
+            )
+        })
+        .then(queryResult =>{
+            if (queryResult.rowCount !== 1) {
+                throw 'No user with such id';
+            }
+            return queryResult.rows[0];
+        })
+
+}
 
 module.exports = {
     addPears,
     deletePearById,
     changePearById,
-    getPears
+    getPears,
+    getPearById
 }
