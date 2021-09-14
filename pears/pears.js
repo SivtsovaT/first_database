@@ -16,6 +16,19 @@ router.post('/pears', ((req, res, next) => {
     }
 ))
 
+router.get('/',(req, res, next) =>{
+    const limit = req.query.limit || 5
+    const offset = req.query.offset || 0
+
+    pears_repository.getPears(limit, offset)
+        .then(pear =>{
+            res.send(pear)
+        })
+    .catch(e =>{
+        next(e)
+    })
+})
+
 router.delete('/pears/:pearId', ((req, res, next) =>{
     const pearId = req.params.pearId
 
