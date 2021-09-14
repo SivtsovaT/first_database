@@ -5,11 +5,18 @@ services:
     ports:
       - "${DATABASE_PORT}:5432"
     volumes:
-      - first_expess_volume:/var/lib/postgresql/data
+      - first_expess_pgvolume:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
       PGDATA: /var/lib/postgresql/data/pgdata
+  first_express_mongodb:
+    image: mongo
+    volumes:
+      - first_expess_mongovolume:/data/db
+    ports:
+      - 27017:27017
 volumes:
-  first_expess_volume: { }
+  first_expess_pgvolume: { }
+  first_expess_mongovolume: { }
