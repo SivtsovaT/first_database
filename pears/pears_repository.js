@@ -86,10 +86,26 @@ const getPearById = (pearId) => {
 
 }
 
+const getPearsInRange = (minAmount, maxAmount)=>{
+    return pool.connect()
+        .then(client => {
+            return client.query(`SELECT kind, origin_country, price_per_tree
+            FROM pears
+            WHERE amount BETWEEN ${minAmount} AND ${maxAmount}`)
+        })
+        .then(queryResult =>{
+            if(queryResult.rowCount !== 1){
+                throw 'No records in these range. Try another.'
+            }
+            return queryResult.rows
+        })
+}
+
 module.exports = {
     addPears,
     deletePearById,
     changePearById,
     getPears,
-    getPearById
+    getPearById,
+    getPearsInRange
 }
