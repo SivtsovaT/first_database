@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const usersApi = require('./users/users')
 const applesApi = require('./apple/apple')
+const dogsApi = require('./dogs/dogs')
 const credentialsApi = require('./credentials/credentials')
 const bodyParser = require('body-parser')
 const pearsApi = require('./pears/pears')
@@ -61,6 +62,7 @@ app.use('/apples', applesApi);
 app.use('/superUsers', usersApi);
 app.use(credentialsApi);
 app.use('/pears', pearsApi)
+app.use('/dogs', dogsApi)
 
 app.get('/', (req, res) => {
     const name = req.query.name
@@ -78,3 +80,5 @@ app.use(postErrorHandler);
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
+
+
